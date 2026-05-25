@@ -13,3 +13,15 @@ X_train, y_train = reader.load_mnist('data/fashion', kind = 'train')
 X_test, y_test = reader.load_mnist('data/fashion', kind= 't10k')
 
 
+trained = np.isin(y_train, [8,0])
+X_train_from = X_train[trained]
+y_train_from = y_train[trained]
+
+
+tested = np.isin(y_train, [8,0])
+X_test2 = X_test[tested]
+y_test2 = y_test[tested]
+
+
+data_split = train_test_split(X_train_from, y_train_from, test_size=0.25, random_state=seed, shuffle=True)
+
