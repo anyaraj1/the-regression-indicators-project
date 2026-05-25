@@ -23,5 +23,18 @@ X_test2 = X_test[tested]
 y_test2 = y_test[tested]
 
 
-data_split = train_test_split(X_train_from, y_train_from, test_size=0.25, random_state=seed, shuffle=True)
 
+
+X_train, X_value, y_train, y_value = train_test_split(X_train_from, y_train_from, test_size=0.25, random_state=seed, shuffle=True)
+
+plt.figure(figsize=(20,20))
+for q in range(4):
+    plt.subplot(1,4,q+1)
+    plt.imshow(X_train[q].reshape(28,28))
+    if y_train[q] == 0:
+        name = "T-Shirt Data"
+    else:
+        name = 'Bag'
+    plt.title(f"{name}")
+    plt.axis('off')
+plt.show()
