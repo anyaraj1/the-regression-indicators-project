@@ -22,3 +22,13 @@ for i, ax in enumerate(axes.flat):
 plt.tight_layout()
 plt.savefig("01_data_preview_knn.png")
 print("Saved the data preview to '01_data_preview_knn.png")
+
+X_train_sub = X_train_flat[:10000]
+y_train_sub = y_train[:10000]
+X_test_final = X_test_flat[:2000]
+y_test_final = y_test[:2000]
+
+X_train_split = X_train_sub[:8000]
+y_train_split = y_train_sub[:8000]
+X_val_split = X_train_sub[8000:]
+y_val_split = y_train_sub[8000:]
