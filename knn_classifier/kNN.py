@@ -32,3 +32,26 @@ X_train_split = X_train_sub[:8000]
 y_train_split = y_train_sub[:8000]
 X_val_split = X_train_sub[8000:]
 y_val_split = y_train_sub[8000:]
+
+print("Hyperparameter Tuning (validation set)")
+k_values = [1,3,5,7,9,15]
+val_scores = []
+
+for k in k_values:
+    knn = KNeighborsClassifier(n_neighbors=k)
+    knn.fit(X+X_train_split, y_train_split)
+    score = knn.score(X_val_split, y_val_split)
+    val_scores.append(score)
+    print(f"Tested k = {k:2d} | Validation accuracy: {score:.4f}")
+
+best_k = k_values[np.argmax(val_scores)]
+print(f"-> Chosen optimal k = {best_k}")
+
+plt.figure(figsize=(6,4))
+plt.plot(k_values, val_scores, marker = 'o', color = 'b')
+plt.title("Hyperparameter Tuning: k V.S Validatoin Accuracy")
+plt.xlabel('k (Number of neighbors)')
+plt.ylabel("Accuracy")
+plt.grid(True)
+plt.savefig("02_tuning_curve.png")
+print("Saved hyperparameter tuning to '02_tuning_curve.png'")
