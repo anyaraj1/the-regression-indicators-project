@@ -8,6 +8,7 @@ import utils.mnist_reader as reader
 seed = 1234
 np.random.seed(1234)
 
+
 X_train, y_train = reader.load_mnist('data/fashion', kind = 'train')
 X_test, y_test = reader.load_mnist('data/fashion', kind= 't10k')
 
