@@ -55,3 +55,15 @@ plt.ylabel("Accuracy")
 plt.grid(True)
 plt.savefig("02_tuning_curve.png")
 print("Saved hyperparameter tuning to '02_tuning_curve.png'")
+
+print("Final evaluation (isolated test set)")
+
+final_model = KNeighborsClassifier(n_neighbors=best_k)
+final_model.fit(X_train_sub, y_train_sub)
+
+preds = final_model.predict(X_test_final)
+print(f"Final test accuracy: {accuracy_score(y_test_final, preds):.4f}\n")
+print("Classification Report:")
+print(classification_report(y_test_final, preds, target_names=labels))
+print("Confusion Matrix:")
+print(confusion_matrix(y_test_final, preds))
