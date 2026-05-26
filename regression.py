@@ -38,3 +38,11 @@ for q in range(4):
     plt.title(f"{name}")
     plt.axis('off')
 plt.show()
+
+min2 = X_train.min(axis=0)
+max3 = X_train.max(axis=0)
+
+transform_train = (X_train - min2) / (max3 - min2 + 1e-4)
+transform_value = (X_value - min2) / (max3 - min2 + 1e-4)
+transform_test = (X_test - min2) / (max3 - min2 + 1e-4)
+
