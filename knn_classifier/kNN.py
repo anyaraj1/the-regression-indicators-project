@@ -67,3 +67,42 @@ print("Classification Report:")
 print(classification_report(y_test_final, preds, target_names=labels))
 print("Confusion Matrix:")
 print(confusion_matrix(y_test_final, preds))
+
+samples_sizes = [1000,3000, 5000, 8000, 10000]
+lc_scores = []
+
+for size in samples_sizes:
+    lc_model = KNeighborsClassifier(n_neighbors=best_k)
+    lc_model.fit(X_train_sub[:size], y_train_sub[:size])
+    lc_scores.append(lc_model.score(X_test_final, y_test_final))
+
+plt.figure(figsize = (6,4))
+plt.plot(samples_sizes, lc_scores, marker = 's', color = 'g')
+plt.title(f"Learning Curve (k={best_k})")
+plt.xlabel('Number of Training Examples')
+plt.ylabel("Test Accuracy")
+plt.grid(True)
+plt.savefig('03_learning_curve.png')
+
+errors = np.where(preds != y_test_final[0])
+bad_idx = errors[0]
+bad_image = X_test_final[bad_idx]
+true_label = y_test_final[bad_idx]
+pred_label = preds[bad_idx]
+
+_, neighbor_ids = final_model.kneighbors([bad_image], n_neighbors=best_k)
+
+fig,axes = plt.subplots(1, best_k + 1, figsize = (12,3))
+axes[0].imshow(bad_image.reshape(28,28), cmap = 'gray')
+axes[0].set_title(f"Wrong\nTrue: {labels[true_label]}\nGuessed: {labels[pred_label]}", color = 'red')
+axes[0].axis('off')
+
+for i, neighbor in enumerate(neighbor_ids[0]):
+    axes[i+1].imshow(X_train_sub[neighbor].reshape(28,28), cmap = 'gray')
+    axes[i+1].set_title(f"Neighbor {i+1}\n{labels[y_train_sub[neighbor]]}")
+    axes[i+1].axis('off')
+
+plt.tight_layout()
+plt.savefig('04_error_analysis.png')
+
+print("Saved error analysis plot")
