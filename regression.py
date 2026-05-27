@@ -18,19 +18,19 @@ X_train_from = X_train[trained]
 y_train_from = y_train[trained]
 
 
-tested = np.isin(y_train, [8,0])
-X_test2 = X_test[tested]
-y_test2 = y_test[tested]
+tested = np.isin(y_test, [8,0])
+X_test = X_test[tested]
+y_test = y_test[tested]
 
 
 
 
 X_train, X_value, y_train, y_value = train_test_split(X_train_from, y_train_from, test_size=0.25, random_state=seed, shuffle=True)
 
-plt.figure(figsize=(20,20))
+plt.figure(figsize=(20,15))
 for q in range(4):
     plt.subplot(1,4,q+1)
-    plt.imshow(X_train[q].reshape(28,28))
+    plt.imshow(X_train[q].reshape(28,28),cmap='gray')
     if y_train[q] == 0:
         name = "T-Shirt Data"
     else:
@@ -66,7 +66,7 @@ for p in ['l1','l2']:
         prediction = model.predict(transform_value)
 
         accuracy2 = accuracy_score(y_value_check, prediction)
-        all_accuracies.append(y_value_check, model.predict(transform_value))
+        all_accuracies.append(accuracy2)
 
         save_tuple = (p,z)
         all_results[save_tuple] =accuracy2
@@ -81,5 +81,39 @@ plt.legend()
 plt.show()
         
 
+all_scores = list(all_results.values())
+bestindex = np.argmax(all_scores)
+done = list(all_results.keys())[bestindex]
+
+model2 = LogisticRegression(penalty=done[0], C=done[1], solver = 'liblinear')
+model2.fit(transform_train, y_train_check)
+
+testprediction = model2.predict(transform_test)
+testaccuracy = accuracy_score(y_testcheck, testprediction)
+
+find_errors = testprediction != y_testcheck
+image = X_test[find_errors]
+true3 = y_test[find_errors]
+predictionerror = testprediction[find_errors]
+
+plt.figure(figsize=(20,15))
+
+for q in range(4):
+    plt.subplot(1, 4, q+1)
+    plt.imshow(image[q].reshape(28,28),cmap='gray')
+
+    if true3[q] == 0:
+        label1 = "T-shirt"
+    else:
+        label1 = 'Bag'
     
+    if predictionerror[q] ==1:
+        label2 = "T-shirt"
+    else:
+        label2 = 'Bag'
+    
+    plt.title(f"Predicted: {label2}, True: {label1}")    
+
+    plt.axis('off')
+plt.show()
 
