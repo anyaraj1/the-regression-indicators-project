@@ -46,3 +46,17 @@ transform_train = (X_train - min2) / (max3 - min2 + 1e-4)
 transform_value = (X_value - min2) / (max3 - min2 + 1e-4)
 transform_test = (X_test - min2) / (max3 - min2 + 1e-4)
 
+y_train_check = (y_train ==0).astype(float)
+y_value_check = (y_value ==0).astype(float)
+y_testcheck = (y_test==0).astype(float)
+
+
+regularization = [0.02, 0.1, 1, 10 ,50]
+
+results = {}
+
+fig, axes = plt.subplots(1,3 (figsize = (20,20)))
+
+for p in ['l1','l2']:
+    
+
