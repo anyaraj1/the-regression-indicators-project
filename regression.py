@@ -75,7 +75,7 @@ for p in ['l1','l2']:
 
 plt.xscale('log')
 plt.xlabel ("Regularization Strength")
-plt.ylabel ("Accuract of Validaation")
+plt.ylabel ("Accuracy of Validation")
 plt.title ("Regularization Strength and Validation Accuracy")
 plt.legend()
 plt.show()
