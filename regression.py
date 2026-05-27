@@ -53,10 +53,33 @@ y_testcheck = (y_test==0).astype(float)
 
 regularization = [0.02, 0.1, 1, 10 ,50]
 
-results = {}
+plt.figure(figsize=(10,10))
 
-fig, axes = plt.subplots(1,3 (figsize = (20,20)))
+all_results = {}
 
 for p in ['l1','l2']:
+    all_accuracies = []
+    for z in regularization:
+        model =  LogisticRegression(penalty=p, C=z, solver='liblinear')
+        model.fit(transform_train, y_train_check)
+
+        prediction = model.predict(transform_value)
+
+        accuracy2 = accuracy_score(y_value_check, prediction)
+        all_accuracies.append(y_value_check, model.predict(transform_value))
+
+        save_tuple = (p,z)
+        all_results[save_tuple] =accuracy2
+
+    plt.plot(regularization, all_accuracies, label = f"{p} Penalty", marker = 'o')
+
+plt.xscale('log')
+plt.xlabel ("Regularization Strength")
+plt.ylabel ("Accuract of Validaation")
+plt.title ("Regularization Strength and Validation Accuracy")
+plt.legend()
+plt.show()
+        
+
     
 
