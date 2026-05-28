@@ -49,7 +49,7 @@ print(f"-> Chosen optimal k = {best_k}")
 
 plt.figure(figsize=(6,4))
 plt.plot(k_values, val_scores, marker = 'o', color = 'b')
-plt.title("Hyperparameter Tuning: k V.S Validatoin Accuracy")
+plt.title("Hyperparameter Tuning: k V.S Validation Accuracy")
 plt.xlabel('k (Number of neighbors)')
 plt.ylabel("Accuracy")
 plt.grid(True)
