@@ -84,13 +84,20 @@ plt.ylabel("Test Accuracy")
 plt.grid(True)
 plt.savefig('03_learning_curve.png')
 
-errors = np.where(preds != y_test_final[0])
-bad_idx = errors[0]
-bad_image = X_test_final[bad_idx]
-true_label = y_test_final[bad_idx]
-pred_label = preds[bad_idx]
+y_true_flat = np.array(y_test_final).flatten()
+preds_flat = np.array(preds).flatten()
+y_train_flat = np.array(y_train_sub).flatten()
 
-_, neighbor_ids = final_model.kneighbors([bad_image], n_neighbors=best_k)
+bad_idx = int(np.argmax(preds_flat != y_true_flat))
+bad_image = X_test_final[bad_idx]
+true_label = int(y_true_flat[bad_idx])
+pred_label = int(preds_flat[bad_idx])
+
+print(f"Analyzing a single mistake: True label is {labels[true_label]}, but model predicted {labels[pred_label]}")
+
+bad_image_2d = bad_image.reshape(1,-1)
+
+_, neighbor_ids = final_model.kneighbors(bad_image_2d, n_neighbors=best_k)
 
 fig,axes = plt.subplots(1, best_k + 1, figsize = (12,3))
 axes[0].imshow(bad_image.reshape(28,28), cmap = 'gray')
