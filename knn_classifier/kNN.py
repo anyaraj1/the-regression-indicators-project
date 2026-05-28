@@ -39,7 +39,7 @@ val_scores = []
 
 for k in k_values:
     knn = KNeighborsClassifier(n_neighbors=k)
-    knn.fit(X+X_train_split, y_train_split)
+    knn.fit(X_train_split, y_train_split)
     score = knn.score(X_val_split, y_val_split)
     val_scores.append(score)
     print(f"Tested k = {k:2d} | Validation accuracy: {score:.4f}")
