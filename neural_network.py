@@ -24,9 +24,9 @@ best_val_acc = -1
 final_hyperparameters = {}
 best_mlp = None
 
-learning_rates = [0.0001, 0.001]
-alphas = [0.025, 0.05, 0.08]
-hidden_layers = [(256,)]
+learning_rates = [0.0005, 0.00075]
+alphas = [0.01, 0.015, 0.02]
+hidden_layers = [(512, 256, 128), (1024,)]
 
 for lr in learning_rates:
     for a in alphas:
@@ -37,16 +37,18 @@ for lr in learning_rates:
                 'hidden_layer': h
             }
 
+            print(f"Training model {len(tuning_results) + 1}/12 | LR: {lr:<7} | Alpha: {a:<5} ... ", end="", flush=True)
+
             mlp_model = MLPClassifier(
                 hidden_layer_sizes=config['hidden_layer'], 
                 alpha=config['alpha'],
                 learning_rate_init=config['learning_rate_init'], 
                 activation='relu', 
                 solver='adam',
-                batch_size=256, 
-                max_iter=200,
+                batch_size=128, 
+                max_iter=300,
                 early_stopping=True,
-                n_iter_no_change=10,
+                n_iter_no_change=5,
                 random_state=seed,
             )
 
@@ -54,6 +56,8 @@ for lr in learning_rates:
 
             train_acc = mlp_model.score(X_tr_flat, y_tr)
             val_acc = mlp_model.score(X_val_flat,y_val)
+
+            print(f"Done. Val Acc: {val_acc:.4f}")
 
             tuning_results.append({
                 'config': config,
