@@ -1,8 +1,9 @@
 import numpy as np
+import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.neural_network import MLPClassifier
-from sklearn.metrics import accuracy_score, classification_report
+from sklearn.metrics import classification_report
 import utils.mnist_reader as reader
 
 seed = 1234
@@ -75,3 +76,27 @@ final_test_accuracy = best_mlp.score(X_te_flat, y_te)
 print('Number of configurations tried:', len(tuning_results))
 print('Final hyperparameters:', final_hyperparameters)
 print('Final test accuracy:  ', final_test_accuracy)
+
+tuning_table = pd.DataFrame([
+    {**r['config'], 'train_acc': r['train_acc'], 'val_acc': r['val_acc']}
+    for r in tuning_results
+])
+
+plt.figure(figsize=(12, 6))
+x = np.arange(len(tuning_table))
+width = 0.35
+
+plt.bar(x - width/2, tuning_table['train_acc'], width, label='Train Accuracy', color='blue')
+plt.bar(x + width/2, tuning_table['val_acc'], width, label='Val Accuracy', color='orange')
+
+x_labels = [f"LR:{r['learning_rate_init']}\nA:{r['alpha']}\n{r['hidden_layer']}" for _, r in tuning_table.iterrows()]
+plt.xticks(x, x_labels, rotation=45, ha='right')
+
+plt.title('Hyperparameter Tuning Comparison (Fashion-MNIST)', fontsize=14, fontweight='bold')
+plt.ylabel('Accuracy', fontsize=12)
+plt.ylim(0.80, 0.95)
+plt.legend(loc='lower right')
+plt.grid(axis='y', linestyle='--', alpha=0.7)
+
+plt.tight_layout()
+plt.show()
