@@ -100,3 +100,7 @@ plt.grid(axis='y', linestyle='--', alpha=0.7)
 
 plt.tight_layout()
 plt.show()
+
+print("\nClassification Report")
+y_pred = best_mlp.predict(X_te_flat)
+print(classification_report(y_te, y_pred, target_names=labels))
